@@ -1,0 +1,47 @@
+/* Resets */
+*, *::after, *::before {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	--bg-color: #161616;
+	--txt-color: #dadada;
+	background-color: var(--bg-color);
+	color: var(--txt-color);
+}
+
+li {
+	list-style: none;
+}
+
+input, button {
+	--bg-color: #dadada;
+	--txt-color: #161616;
+	background-color: var(--bg-color);
+	color: var(--txt-color);
+}
+
+p, span, div, section, header, footer, article, h1, h2, h3 {
+	--bg-color: transparent;
+	--txt-color: auto;
+	background-color: var(--bg-color);
+	color: var(--txt-color);
+}
+
+.navbar {
+	--bg-color: var(--primary);
+	display: flex;
+	justify-content: space-between;
+	padding-inline: 1rem;
+}
+
+.active {
+	color: red;
+}
+
+.nav-menu ul {
+	display: flex;
+	gap: 1rem;
+}

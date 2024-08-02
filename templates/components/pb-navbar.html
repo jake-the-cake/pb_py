@@ -1,0 +1,14 @@
+<header class='navbar'>
+	<div class="nav-logo"></div>
+	<div class="nav-menu">
+		<ul>
+			{% for n in nav %}
+				{% if n.active == True %}
+					<li class='active'>{{ n.text }}</li>
+				{% else %}
+					<li>{{ n.text }}</li>
+				{% endif %}
+			{% endfor %}
+		</ul>
+	</div>
+</header>

@@ -1,0 +1,7 @@
+:root {
+	--primary-h: 30;
+
+	--primary-hsl: var(--primary-h), 50%, 50%;
+
+	--primary: hsl(var(--primary-hsl))
+}
