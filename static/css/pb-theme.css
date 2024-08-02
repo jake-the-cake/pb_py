@@ -1,7 +1,10 @@
 :root {
-	--primary-h: 30;
+	--primary-h: 270;
+	--accent-h: 35;
 
-	--primary-hsl: var(--primary-h), 50%, 50%;
+	--primary-hsl: var(--primary-h), 80%, 40%;
+	--accent-hsl: var(--accent-h), 70%, 70%;
 
-	--primary: hsl(var(--primary-hsl))
+	--primary: hsl(var(--primary-hsl));
+	--accent: hsl(var(--accent-hsl));
 }

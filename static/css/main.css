@@ -10,9 +10,14 @@ body {
 	--txt-color: #dadada;
 	background-color: var(--bg-color);
 	color: var(--txt-color);
+	font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 li {
+	--bg-color: transparent;
+	--txt-color: #dadada;
+	background-color: var(--bg-color);
+	color: var(--txt-color);
 	list-style: none;
 }
 
@@ -30,6 +35,13 @@ p, span, div, section, header, footer, article, h1, h2, h3 {
 	color: var(--txt-color);
 }
 
+a {
+	--bg-color: transparent;
+	--txt-color: inherit;
+	background-color: var(--bg-color);
+	color: var(--txt-color);
+}
+
 .navbar {
 	--bg-color: var(--primary);
 	display: flex;
@@ -37,11 +49,23 @@ p, span, div, section, header, footer, article, h1, h2, h3 {
 	padding-inline: 1rem;
 }
 
-.active {
-	color: red;
+.nav-active {
+	--txt-color: var(--accent);
 }
 
 .nav-menu ul {
 	display: flex;
 	gap: 1rem;
+	letter-spacing: 1.2px;
+	font-size: .8rem;
+	font-weight: 700;
+}
+
+.nav-menu a {
+	text-decoration: none;
+	transition: color .3s linear;
+}
+
+.nav-menu a:hover {
+	--txt-color: var(--accent);
 }

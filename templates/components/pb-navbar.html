@@ -1,12 +1,16 @@
 <header class='navbar'>
-	<div class="nav-logo"></div>
+	<div class="nav-logo">
+		<a href="/">
+			Peak Bound Journeys
+		</a>
+	</div>
 	<div class="nav-menu">
 		<ul>
 			{% for n in nav %}
 				{% if n.active == True %}
-					<li class='active'>{{ n.text }}</li>
+					<li class='nav-active'>{{ n.text }}</li>
 				{% else %}
-					<li>{{ n.text }}</li>
+					<li><a href="{{ n.url }}">{{ n.text }}</a></li>
 				{% endif %}
 			{% endfor %}
 		</ul>
