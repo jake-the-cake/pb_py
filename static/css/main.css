@@ -42,6 +42,30 @@ a {
 	color: var(--txt-color);
 }
 
+/* Modal */
+.modal {
+	--bg-color: hsl(0 0% 9% / .8) !important;
+	display: grid;
+	place-items: center;
+	z-index: 100;
+	position: absolute;
+	opacity: 0;
+	top: 0;
+	width: 100vw;
+	height: 100vh;
+	left: 0;
+	transition: opacity .2s linear;
+}
+
+.modal.open {
+	opacity: 1;
+}
+
+.modal.hidden {
+	visibility: hidden;
+}
+
+/* Navbar */
 .navbar {
 	--bg-color: var(--primary);
 	display: flex;
@@ -68,4 +92,88 @@ a {
 
 .nav-menu a:hover {
 	--txt-color: var(--accent);
+}
+
+/* Forms */
+.form-card {
+	background-color: #adadad;
+	color: var(--primary);
+	padding: 1rem;
+	border: solid 1px black;
+	width: 90vw;
+	max-width: 550px;
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+.form-title {
+	font-size: 1.2rem;
+	font-weight: 600;
+}
+
+.form-sm-text {
+	font-size: .7rem;
+	font-style: italic;
+}
+
+.form-line {
+	display: flex;
+	align-items: center;
+	color: #161616;
+}
+
+.form-line label {
+	width: 33%;
+	font-size: .8rem;
+	font-weight: 700;
+	font-variant: small-caps;
+	text-align: center;
+}
+
+.form-line input, .form-line select {
+	width: 67%;
+	border-radius: 9999px;
+	padding: .2rem .5rem;
+}
+
+.form-btns {
+	margin: auto;
+	display: flex;
+	gap: 1rem;
+}
+
+.form-btn, .form-btn-outline {
+	cursor: pointer;
+	width: fit-content;
+	padding: .75rem 2rem;
+	border-radius: 9999px;
+	border: 1px solid var(--txt-color);
+	opacity: .9;
+	transition: opacity .3s linear;
+}
+
+.form-btn:hover {
+	opacity: 1;
+}
+
+.form-btn {
+	--bg-color: var(--primary);
+	--txt-color: var(--accent);
+	font-weight: 700;
+	font-size: 1.2rem;
+}
+
+.form-btn-outline {
+	--bg-color: transparent;
+	--txt-color: var(--primary);
+}
+
+/* Misc */
+.underline { text-decoration: underline !important; }
+.sm-shadow {
+	box-shadow: 0 2px 10px -4px black;
+}
+.sm-shadow-light {
+	box-shadow: 0 2px 10px -4px white;
 }
