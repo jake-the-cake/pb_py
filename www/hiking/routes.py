@@ -58,3 +58,7 @@ def new_user():
 @app.route('/api/user/all/', methods=['GET'])
 def get_all():
 	return User().get()
+
+@app.route('/api/user/remove/', methods=['GET'])
+def remove_all():
+	return User().remove()
