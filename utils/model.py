@@ -9,8 +9,8 @@ class Field:
 		'phone'
 	]
 
-	def __init__(self, type, *args) -> None:
-		
+	def __init__(self, type, args) -> None:
+
 		# verify that a valid field type is being used
 		if type not in Field.types:
 			self.error = ValueError('Invalid Field Type')
@@ -38,13 +38,16 @@ class Field:
 			# set a max_length if provided
 			if len(args) > 1 and isinstance(args[1], int):
 				self.max_length = args[1]
+		if self.error: print(self.error)
 
 	def required(self):
-		self.is_reqired = True
+		if not self.error:
+			self.is_reqired = True
 		return self
 	
 	def unique(self):
-		self.is_unique = True
+		if not self.error:
+			self.is_unique = True
 		return self
 
 	@staticmethod
