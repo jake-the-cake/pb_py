@@ -4,6 +4,7 @@ from app import db
 
 class ApiController:
 
+	e400 = { 'Error': 'The request contains error(s).' }
 	e401 = { 'Error': 'You are not authorized.' }
 	e404 = { 'Error': 'The requested content was not found.' }
 
@@ -27,9 +28,10 @@ class ApiController:
 			self.model = self.use_model()
 
 	def security_check(self, level):
-		print(level)
-		if level == 5:
-			return True
+		if level >= 5: return True
+		if level == 1:
+			if self.json.get('security-token'): return True
+		return False
 	
 	def get_result(self, query):
 		return list(self.table.find(query))
@@ -51,13 +53,21 @@ class ApiController:
 	def new(self):
 		if not self.has_clearance: return self._401(self.e401)
 		try:
-			for key, value in self.model.__dict__.items():
-				self.response_obj[key] = self.json.get(value.object_key)
+			for key, obj in self.model.__dict__.items():
+				value = self.json.get(obj.object_key)
+				if value == None:
+					value = obj.value
+				obj.value = value
+				self.response_obj[key] = value
 			self.use_id()
+			self.model.validate(self.response_obj, self.table)
+			if self.model.errors != {}:
+				return self._400({ 'Error': self.model.errors })
 			self.table.insert_one(self.response_obj)
 			return self._200(self.response_obj)
 		except Exception as e:
-			return self._400(e)
+			print(e)
+			return self._400({ 'Error': 'err' })
 
 	def remove(self, query = {}):
 		if not self.has_clearance: return self._401(self.e401)
