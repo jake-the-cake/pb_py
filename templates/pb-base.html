@@ -17,7 +17,7 @@
 	<div class="modal hidden">
 		<form class='form-card sm-shadow-light' id='sign-up-form'>
 			<div class="form-top">
-				<span class="form-title">Create An Account</span>
+				<span class="form-title">Become A Member</span>
 				<p class='form-sm-text'>Receive updates and exclusive offers.</p>
 			</div>
 			<div class="form-line">
@@ -57,8 +57,20 @@
 				e.preventDefault()
 				const data = getFormDataObj(e.target)
 				response = await apiPostRequest('/api/user/new', data)
-				if (!response.error) hideModal()
-				else console.error(response.error)
+				console.log(response)
+				if (!response.errors) hideModal()
+				else {
+					console.error(response.errors)
+					Object.entries(response.errors).forEach(err => {
+						input = e.target.querySelector('input[name=' + err[0] + ']')
+						input.value = err[1]
+						input.classList.add('form-field-error')
+						input.onfocus = (e) => {
+							e.target.value = data[err[0]]
+							e.target.classList.remove('form-field-error')
+						}
+					})
+				}
 			}
 			
 			// make the cancel button close the modal

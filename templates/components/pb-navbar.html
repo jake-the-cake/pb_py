@@ -14,7 +14,7 @@
 				{% endif %}
 			{% endfor %}
 			{% if user %}
-				{{ user }}
+				<li><a class='underline' href="/api/user/{{ user._id }}">Profile</a></li>
 			{% else %}
 				<li><a class='underline' href="#sign-up">Join</a></li>
 			{% endif %}

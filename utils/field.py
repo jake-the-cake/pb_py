@@ -33,7 +33,7 @@ class Field:
 			# set defaults
 			self.max_length = 50
 			self.is_unique = False
-			self.is_reqired = False
+			self.is_required = False
 			self.value = None
 
 			# set a max_length if provided
@@ -43,7 +43,7 @@ class Field:
 
 	def required(self):
 		if not self.error:
-			self.is_reqired = True
+			self.is_required = True
 		return self
 	
 	def unique(self):

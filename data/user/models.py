@@ -13,5 +13,6 @@ class User(ApiController):
 			last_name = StringField('last-name', 20),
 			email = EmailField('email', 30).required().unique(),
 			age = StringField('age', 3),
-			security_level = IntegerField('security-level', 1).default(4)
+			security_level = IntegerField('security-level', 1).default(4),
+			password = StringField('password', 100)
 		)

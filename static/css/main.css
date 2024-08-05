@@ -21,11 +21,13 @@ li {
 	list-style: none;
 }
 
-input, button {
+input, button, select {
 	--bg-color: #dadada;
 	--txt-color: #161616;
 	background-color: var(--bg-color);
 	color: var(--txt-color);
+	border-width: 1px;
+	border-color: var(--primary);
 }
 
 p, span, div, section, header, footer, article, h1, h2, h3 {
@@ -167,6 +169,13 @@ a {
 .form-btn-outline {
 	--bg-color: transparent;
 	--txt-color: var(--primary);
+}
+
+.form-field-error {
+	--bg-color: rgba(235, 75, 75, .3);
+	--txt-color: rgb(71, 15, 15);
+	outline: 2px solid rgba(235, 75, 75, .8);
+	font-size: .7rem;
 }
 
 /* Misc */
