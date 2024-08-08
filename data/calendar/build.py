@@ -47,14 +47,18 @@ MONTHS = {
 }
 
 DAY_ONE = { 'weekday': 2,	'year': 2024 }
-THROUGH_YEAR = 2030
+THROUGH_YEAR = 2040
 
 # ------------------------ #
 # -USE-DATA--------------- #
 # ------------------------ #
-def use_calendar():
+def use_calendar(year = None, month = None):
 	with open('data/calendar/calendar.json', 'r') as file:
 		data = json.load(file)
+	
+	for m in MONTHS:
+		MONTHS[m][2] = ''
+
 	calendar = {
 		"months": MONTHS,
 		"days": DAYS,
