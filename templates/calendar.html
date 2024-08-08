@@ -1,0 +1,78 @@
+{% extends "pb-home.html" %}
+
+{% block content %}
+
+	<style>
+		.cal-table {
+			margin: auto;
+			padding: 1rem;
+		}
+
+		.cal-table div {
+			border: 1px solid white;
+		}
+
+		.cal-row {
+			display: flex;
+			justify-content: space-between;
+		}
+
+		.cal-day {
+			aspect-ratio: 1;
+		}
+
+		.cal-row div {
+			flex: 1;
+			padding: .5rem;
+		}
+	</style>
+
+	<div id = 'calendar' class='cal-table'>
+		<h1>Jan 2024</h1>
+		<div class="cal-row">
+			{% for d in cal.days %}
+				<div>{{ cal.days[d][1]|upper }}</div>
+			{% endfor %}
+		</div>
+		<div class="cal-row" id="blank-cal-row">
+			<div class="cal-day">{{ cal.data }}</div>
+		</div>
+	</div>
+
+	<script>
+		
+		const year = 2030
+		const month = '12'
+		const cal = document.querySelector('#calendar')
+		const row = document.querySelector('#blank-cal-row')
+		const data = JSON.parse(row.firstElementChild.innerText.replaceAll("'", '"'))
+		const current = data[year][month]
+	
+		let rows = 0
+		const { first, days } = current
+
+		while (rows <= (days + first) / 7) {
+			
+			const new_row = row.cloneNode(true)
+			const child = new_row.firstElementChild.cloneNode(true)
+			new_row.removeChild(new_row.firstElementChild)
+
+			for (let i = 1; i <= 7; i++) {
+				let text = String(rows * 7 + i - first + 1)
+				const new_child = child.cloneNode(true)
+				if (Number(text) < 1 || Number(text) > days ) text = ''
+
+				new_child.innerText = text
+				new_row.appendChild(new_child)
+				console.log(new_row)
+			}
+			cal.appendChild(new_row)
+			rows ++
+		}
+		cal.removeChild(row)
+
+		console.log(current)
+
+
+	</script>
+{% endblock content %}
