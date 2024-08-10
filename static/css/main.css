@@ -178,6 +178,10 @@ a {
 	font-size: .7rem;
 }
 
+.primary-text {
+	color: var(--primary);
+}
+
 /* Misc */
 .underline { text-decoration: underline !important; }
 .sm-shadow {
