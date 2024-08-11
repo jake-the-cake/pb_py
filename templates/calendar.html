@@ -34,6 +34,11 @@
 			aspect-ratio: 1;
 			font-size: .7rem;
 			--txt-color: var(--accent);
+			--bg-color: #373737;
+		}
+
+		.cal-day-dim span {
+			opacity: .4;
 		}
 
 		.cal-row div {
@@ -86,13 +91,13 @@
 				if (Number(text) > days) {
 					if (i === 1) break
 					text = Number(text) - days
-					new_child.classList.add('primary-text')
+					new_child.classList.add('cal-day-dim')
 				}
 				if (Number(text) < 1) {
 					text = Number(text) + previous.days
-					new_child.classList.add('primary-text')
+					new_child.classList.add('cal-day-dim')
 				}
-				new_child.innerText = text
+				new_child.innerHTML = `<span>${ text }</spam>`
 				new_row.appendChild(new_child)
 			}
 			cal.appendChild(new_row)

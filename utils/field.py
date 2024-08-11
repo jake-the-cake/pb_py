@@ -6,7 +6,9 @@ class Field:
 		'float',
 		'boolean',
 		'email',
-		'phone'
+		'phone',
+		'date',
+		'time'
 	]
 
 	def __init__(self, type, args) -> None:
@@ -14,6 +16,8 @@ class Field:
 		# verify that a valid field type is being used
 		if type not in Field.types:
 			self.error = ValueError('Invalid Field Type')
+		elif type == 'date' or type == 'time':
+			self.error = None
 		# verify that an object key was provided
 		elif len(args) < 1:
 			self.error = KeyError('Object Key Is Required')
@@ -80,6 +84,14 @@ class Field:
 	def PhoneField(*args):
 		return Field('phone', args)
 	
+	@staticmethod
+	def DateField(*args):
+		return Field('date', args)
+	
+	@staticmethod
+	def TimeField(*args):
+		return Field('time', args)
+	
 	def __str__(self) -> str:
 		return self.object_key
 
@@ -89,3 +101,5 @@ BooleanField = Field.BoolField
 FloatField = Field.FloatField
 EmailField = Field.EmailField
 PhoneField = Field.PhoneField
+DateField = Field.DateField
+TimeField = Field.TimeField

@@ -5,6 +5,10 @@ app = Flask(__name__)
 client = MongoClient('localhost', 27017)
 db = client.data
 
-from www.hiking.routes import *
+# api routes
 from data.user.routes import *
+from data.calendar.routes import *
+
+# web routes
+from www.hiking.routes import *
 from www.apps.calendar.routes import *

@@ -15,7 +15,7 @@ class Model:
 		print(self.errors)
 
 	def check_required(self, obj_key, key, value):
-		if value == '' or None:
+		if value == '' or value == None:
 			self.errors[obj_key] = 'Value required for {}'.format(key)
 
 	def check_unique(self, obj_key, key, value, table):

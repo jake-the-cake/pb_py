@@ -68,7 +68,6 @@ class ApiController:
 			obj.value = value
 			self.response_obj[key] = value
 
-
 	# ------------------------ #
 	# -CONTROLS--------------- #
 	# ------------------------ #

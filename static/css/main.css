@@ -71,7 +71,8 @@ a {
 .navbar {
 	--bg-color: var(--primary);
 	display: flex;
-	justify-content: space-between;
+	justify-content: space-between;    
+	align-items: center;
 	padding-inline: 1rem;
 }
 
