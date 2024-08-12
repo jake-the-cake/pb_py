@@ -114,7 +114,7 @@ def main():
 
 	# save to file
 	with open(filename, 'w') as file:
-		json.dump(data, file, indent = 2)
+		json.dump(data, file)
 
 if __name__ == '__main__':
 	main()
