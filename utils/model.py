@@ -14,6 +14,9 @@ class Model:
 				if attr.is_unique: self.check_unique(obj_key, key, value, table)
 		print(self.errors)
 
+	def populate_by_id(self, model, id):
+		print(model, id)
+
 	def check_required(self, obj_key, key, value):
 		if value == '' or value == None:
 			self.errors[obj_key] = 'Value required for {}'.format(key)

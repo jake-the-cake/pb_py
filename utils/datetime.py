@@ -8,6 +8,18 @@ def str_or_none(value):
 	if value == None: return value
 	return str(value)
 
+class Time:
+
+	format_lengths = {
+		'hour': 2,
+		'minute': 2,
+		'second': 2,
+		'milli': 3,
+	}
+
+	def __init__(self) -> None:
+		pass
+
 class Date:
 
 	format_lengths = {
@@ -23,7 +35,7 @@ class Date:
 		self.format_values()
 
 	def format_values(self):
-		for key, value in Date.format_lengths.items():
+		for key, value in self.format_lengths.items():
 			formatted_value = str_or_none(self.trim_values(getattr(self, key), value))
 			setattr(self, key, formatted_value)
 
