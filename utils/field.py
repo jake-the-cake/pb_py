@@ -42,18 +42,20 @@ class Field:
 		if type in relational:
 			
 			key = '_id'
+			self.value_data = ''
 			
 			for i, value in enumerate(args):
-				if i == 0: self.value = str(value.__name__).lower()
+				name = str(args[0].__name__).lower()
+				if i == 0:
+					self.value = name
 				if i == 1:
 					if value == 'one':
-						self.value_data = ''
-					else: self.value_data = []
-					self.value = '::'.join([self.value, str(self.value_data)])
-						
-				if i == 2: key = value
-			self.object_key = key
-			print(self)
+						self.value_data = '__'
+					else: self.value_data = '[__]'
+				if i == 2:
+					key = value
+				self.value = '::'.join([name, key, str(self.value_data)])
+			self.object_key = name
 
 		elif type in form_data:
 			
@@ -77,6 +79,8 @@ class Field:
 		
 		# for dev testing
 		if self.error: print(self.error)
+		print(self)
+
 
 	def required(self):
 		if not self.error:

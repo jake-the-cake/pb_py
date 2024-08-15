@@ -12,6 +12,7 @@ class Model:
 				attr = getattr(self, key)
 				if attr.is_required: self.check_required(obj_key, key, value)
 				if attr.is_unique: self.check_unique(obj_key, key, value, table)
+				setattr(obj, 'value', value)
 		print(self.errors)
 
 	def populate_by_id(self, model, id):
