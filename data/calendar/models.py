@@ -1,22 +1,15 @@
 from utils.controller import ApiController
-from utils.field import StringField, DateField, TimeField, TableField
+from utils.field import Text_Field, Date_Field, Relational_Field
 from utils.model import Model
 from data.user.models import User
 
-class Event(ApiController):
+class Event(Model):
 	
-	def __init__(self, security_level = 5) -> None:
-		super().__init__('event', security_level)
-
-	def use_model(self):
-		self.model = Model(
-			title = StringField('title', 20).required(),
-			start_date = DateField('start-date').required(),
-			end_date = DateField('end-date'),
-			start_time = TimeField('start-time').required(),
-			end_time = TimeField('end-time'),
-		)
-		return self.model
+	title = Text_Field(keep_case = True).required()
+	start_date = Date_Field().required()
+	end_date = Date_Field()
+	start_time = Date_Field().required()
+	end_time = Date_Field()
 	
 class Calendar(ApiController):
 
@@ -25,8 +18,8 @@ class Calendar(ApiController):
 
 	def use_model(self):
 		self.model = Model(
-			user = TableField(User, 'one'),
-			created_events = TableField(Event, 'many'),
-			attending = TableField(Event, 'many'),
-			invites = TableField(Event, 'many')
+			user = Relational_Field(),
+			created_events = Relational_Field(),
+			attending = Relational_Field(),
+			invites = Relational_Field()
 		)

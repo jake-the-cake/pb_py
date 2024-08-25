@@ -1,19 +1,25 @@
-class Model:
+from utils.controller import ApiController
+from app import db
+
+class Model(ApiController):
 
 	def __init__(self, **kwargs):
-		for key, value in kwargs.items():
-			setattr(self, key, value)
-
-	def validate(self, obj, table):
+		self.schema = {}
+		for key in self.__class__.__dict__.keys():
+			if not key.startswith('__'):
+				self.schema[key] = None
+		print(self)
+		super().__init__()
+		self.name = str.lower(self.__class__.__name__)
+		self.table = db[self.name]
 		self.errors = {}
-		for key, value in obj.items():
-			if key != 'errors' and key != '_id':
-				obj_key = getattr(self, key).object_key
-				attr = getattr(self, key)
-				if attr.is_required: self.check_required(obj_key, key, value)
-				if attr.is_unique: self.check_unique(obj_key, key, value, table)
-				setattr(obj, 'value', value)
-		print(self.errors)
+		print(kwargs)
+		# for key, value in kwargs.items():
+		# 	print(key)
+		# 	setattr(self.schema, key, value)
+
+	def validate(self):
+		pass
 
 	def populate_by_id(self, model, id):
 		print(model, id)

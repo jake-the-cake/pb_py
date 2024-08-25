@@ -1,4 +1,4 @@
-from utils.field import StringField, EmailField, IntegerField
+from utils.field import Text_Field, Email_Field, Number_Field
 from utils.model import Model
 from utils.controller import ApiController
 
@@ -9,10 +9,10 @@ class User(ApiController):
 
 	def use_model(self):
 		return Model(
-			first_name = StringField('first-name', 20).required(),
-			last_name = StringField('last-name', 20),
-			email = EmailField('email', 30).required().unique(),
-			age = StringField('age', 3),
-			security_level = IntegerField('security-level', 1).default(4),
-			password = StringField('password', 100)
+			first_name = Text_Field().required(),
+			last_name = Text_Field(),
+			email = Email_Field().required().unique(),
+			age = Text_Field(),
+			security_level = Number_Field().default(),
+			password = Text_Field()
 		)
