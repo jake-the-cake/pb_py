@@ -7,16 +7,11 @@ class Model(ApiController):
 		self.schema = {}
 		for key in self.__class__.__dict__.keys():
 			if not key.startswith('__'):
-				self.schema[key] = None
-		print(self)
+				self.schema[key] = self.__class__.__dict__[key]
 		super().__init__()
 		self.name = str.lower(self.__class__.__name__)
 		self.table = db[self.name]
 		self.errors = {}
-		print(kwargs)
-		# for key, value in kwargs.items():
-		# 	print(key)
-		# 	setattr(self.schema, key, value)
 
 	def validate(self):
 		pass

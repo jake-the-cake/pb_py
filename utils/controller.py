@@ -43,10 +43,11 @@ class ApiController:
 	
 	def set_response_obj(self):
 		for key in self.schema.keys():
-			value = self.json.get(key)
-			if value == None:
-				value = 'val'
-			self.response_obj[key] = value
+			print(key)
+			self.response_obj[key] = self.schema[key]
+			self.response_obj[key].value = self.json.get(key)
+
+		print(vars(self))
 
 	# ------------------------ #
 	# -CONTROLS--------------- #
@@ -61,7 +62,7 @@ class ApiController:
 			self.table.insert_one(self.response_obj)
 			return self._200(self.response_obj)
 		except Exception as e:
-			print(e)
+			raise (e)
 			return self._400(self.e400)
 
 	def remove(self, query = {}):

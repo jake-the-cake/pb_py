@@ -10,6 +10,8 @@ class Event(Model):
 	end_date = Date_Field()
 	start_time = Date_Field().required()
 	end_time = Date_Field()
+
+# Event(title = 'Title')
 	
 class Calendar(ApiController):
 
