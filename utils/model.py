@@ -1,15 +1,30 @@
 from utils.controller import ApiController
 from app import db
 
+def set_class_props(c, obj = None):
+
+	d = c.__class__.__dict__
+	if not obj: obj = {}
+	for key in d.keys():
+		if not key.startswith('__'):
+				obj[key] = d[key]
+
+	return obj
+
 class Model(ApiController):
 
 	def __init__(self, **kwargs):
+		
 		self.schema = {}
-		for key in self.__class__.__dict__.keys():
-			if not key.startswith('__'):
-				self.schema[key] = self.__class__.__dict__[key]
-		super().__init__()
 		self.name = str.lower(self.__class__.__name__)
+
+		set_class_props(self, self.schema)
+
+		# for key in self.__class__.__dict__.keys():
+		# 	if not key.startswith('__'):
+		# 		self.schema[key] = self.__class__.__dict__[key]
+		
+		super().__init__()
 		self.table = db[self.name]
 		self.errors = {}
 

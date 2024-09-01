@@ -1,8 +1,10 @@
 from utils.uuid import uuid4_hex
 from flask import request, jsonify
 # from app import db
+from utils.quiggle import Quiggle
 
-class ApiController:
+class ApiController(Quiggle):
+	super().__init__()
 
 		# error responses
 	e400 = { 'Error': 'The request contains error(s).' }
