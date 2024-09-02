@@ -4,7 +4,6 @@ from flask import request, jsonify
 from utils.quiggle import Quiggle
 
 class ApiController(Quiggle):
-	super().__init__()
 
 		# error responses
 	e400 = { 'Error': 'The request contains error(s).' }
@@ -24,30 +23,32 @@ class ApiController(Quiggle):
 	# ------------------------ #
 
 	def __init__(self) -> None:
-		
+		super().__init__()
+			# create an empty response
+		self.response_obj = {}
 			# capture request information
 		self.request_obj = request
 		if request.is_json:
 			self.json = request.get_json()
 			self.data = request.get_data()
 		
-		# create an empty response
-		self.response_obj = {}
 	
 	# ------------------------ #
 	# -UTILS------------------ #
 	# ------------------------ #
 	
-	def use_id(self):	self.response_obj['_id'] = uuid4_hex()
+	def use_id(self):	self.response_obj['data']['_id'] = uuid4_hex()
 
 	def get_result(self, query):
 		return list(self.table.find(query))
 	
 	def set_response_obj(self):
+		self.response_obj['data'] = {}
 		for key in self.schema.keys():
 			print(key)
 			self.response_obj[key] = self.schema[key]
 			self.response_obj[key].value = self.json.get(key)
+			self.response_obj['data'][key] = self.response_obj[key].value
 
 		print(vars(self))
 
@@ -61,10 +62,9 @@ class ApiController(Quiggle):
 			self.use_id()
 			if self.errors != {}:
 				return self._400({ 'errors': self.model.errors })
-			self.table.insert_one(self.response_obj)
-			return self._200(self.response_obj)
+			self.table.insert_one(self.response_obj['data'])
+			return self._200(self.response_obj['data'])
 		except Exception as e:
-			raise (e)
 			return self._400(self.e400)
 
 	def remove(self, query = {}):

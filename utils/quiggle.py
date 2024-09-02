@@ -1,7 +1,7 @@
 class Error:
 
-  def __init__(self):
-    self.errors = {}
+  def __init__(_, parent):
+    parent.errors = {}
 
 
 

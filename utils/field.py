@@ -1,6 +1,7 @@
-from typing import Self
+# from typing import Self
 from utils.color import log_bug
 
+Self = str
 allowed_field_type = str | bool | int | None
 kwargs_type = dict[str, allowed_field_type]
 
@@ -230,9 +231,3 @@ class Date_Field(Text_Field):
 		super().use_options(options)
 
 # -------------------------------END special text fields
-
-x = Number_Field(round_int = 'up').required().unique().default(5)
-x.string_value = '555.0'
-x.parse()
-print(x.value)
-print(vars(x))
