@@ -1,6 +1,5 @@
 from utils.uuid import uuid4_hex
 from flask import request, jsonify
-# from app import db
 from utils.quiggle import Quiggle
 
 class ApiController(Quiggle):
@@ -18,6 +17,9 @@ class ApiController(Quiggle):
 	def _404(self, response):	return jsonify(response), 404
 	def _500(self, response):	return jsonify(response), 500
 
+	def common_reponse(self, status_code: int):
+		return jsonify(self.get_response_data()), status_code
+
 	# ------------------------ #
 	# -INIT------------------- #
 	# ------------------------ #
@@ -25,13 +27,17 @@ class ApiController(Quiggle):
 	def __init__(self) -> None:
 		super().__init__()
 			# create an empty response
-		self.response_obj = { 'data': {} }
+		self.response_obj = { 'data': {}, 'string_data': {} }
 			# capture request information
 		self.request_obj = request
 		if request.is_json:
 			self.json = request.get_json()
+			json_dict = {}
+			for key in self.json.keys():
+				py_key = key.replace('-', '_')
+				json_dict[py_key] = self.json[key]
+			self.json = json_dict
 			self.data = request.get_data()
-		
 	
 	# ------------------------ #
 	# -UTILS------------------ #
@@ -45,9 +51,13 @@ class ApiController(Quiggle):
 	def set_response_obj(self):
 		for key in self.schema.keys():
 			value = self.json.get(key)
-			self.response_obj[key] = self.schema[key]
-			self.response_obj[key].value = value
-			self.response_obj['data'][key] = value
+			schema_key = self.schema[key]
+			schema_key.value = value
+			schema_key.validate()
+			schema_key.stringify()
+			self.response_obj['data'][key] = schema_key.value
+			self.response_obj['string_data'][key] = schema_key.string_value
+		self.validate()
 
 	# ------------------------ #
 	# -CONTROLS--------------- #
@@ -57,20 +67,22 @@ class ApiController(Quiggle):
 		try:
 			self.set_response_obj()
 			self.use_id()
-			self.validate()
 			if self.errors != {}:
 				return self._400({ 'errors': self.model.errors })
-			self.table.insert_one(self.response_obj['data'])
-			return self._200(self.response_obj['data'])
+			self.add_one()
+			return self.common_reponse(200)
 		except Exception as e:
+			raise(e)
 			return self._400(self.e400)
 
 	def remove(self, query = {}):
 		result = self.get_result(query)
 		for r in result:
 			self.table.delete_one(r)
-		return self._200(result)
+		return self._200({})
 
 	def get(self, query = {}):
+		self.set_response_obj()
 		result = self.get_result(query)
-		return self._200(result)
+		print(result)
+		return self.common_reponse(200)

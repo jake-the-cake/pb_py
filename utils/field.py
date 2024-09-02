@@ -1,5 +1,6 @@
 # from typing import Self
 from utils.color import log_bug
+from utils.quiggle import Quiggle
 
 Self = str
 allowed_field_type = str | bool | int | None
@@ -9,9 +10,10 @@ kwargs_type = dict[str, allowed_field_type]
 # validates each piece of data going into db
 # parses each piece of data from the db
 
-class Field:
+class Field(Quiggle):
 
 	def __init__(self: Self, field_type: str, kwargs: kwargs_type) -> None:
+		super().__init__()
 
 		# set default props
 		self.is_required: bool = False
@@ -87,7 +89,11 @@ class Field:
 	# write methods
 	# -------------
 
-	# string version of a variable to store in db
+		# fallback validation method on incoming data
+	def validate(self: Self) -> None:
+		self.tools.default_method_log(self, 'validate')
+
+		# string version of a variable to store in db
 	def stringify(self: Self) -> None:
 		self.string_value = str(self.value)
 
