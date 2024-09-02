@@ -25,7 +25,7 @@ class ApiController(Quiggle):
 	def __init__(self) -> None:
 		super().__init__()
 			# create an empty response
-		self.response_obj = {}
+		self.response_obj = { 'data': {} }
 			# capture request information
 		self.request_obj = request
 		if request.is_json:
@@ -43,14 +43,11 @@ class ApiController(Quiggle):
 		return list(self.table.find(query))
 	
 	def set_response_obj(self):
-		self.response_obj['data'] = {}
 		for key in self.schema.keys():
-			print(key)
+			value = self.json.get(key)
 			self.response_obj[key] = self.schema[key]
-			self.response_obj[key].value = self.json.get(key)
-			self.response_obj['data'][key] = self.response_obj[key].value
-
-		print(vars(self))
+			self.response_obj[key].value = value
+			self.response_obj['data'][key] = value
 
 	# ------------------------ #
 	# -CONTROLS--------------- #
@@ -60,6 +57,7 @@ class ApiController(Quiggle):
 		try:
 			self.set_response_obj()
 			self.use_id()
+			self.validate()
 			if self.errors != {}:
 				return self._400({ 'errors': self.model.errors })
 			self.table.insert_one(self.response_obj['data'])

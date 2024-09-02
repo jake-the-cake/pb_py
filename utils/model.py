@@ -1,22 +1,12 @@
 from utils.controller import ApiController
 from app import db
 
-def set_class_props(c, obj = {}):
-		# class dict variable
-	d = c.__class__.__dict__
-		# fill dict with class keys
-	for key in d.keys():
-			# exclude default methods
-		if not key.startswith('__'):
-				obj[key] = d[key]
-	return obj
-
 class Model(ApiController):
 
 	def __init__(self):
 		self.schema = {}
 		self.name = str.lower(self.__class__.__name__)
-		set_class_props(self, self.schema)
+		self.set_class_props(self, self.schema)
 		super().__init__()
 		self.table = db[self.name]
 
