@@ -30,14 +30,14 @@ class ApiController(Quiggle):
 		self.response_obj = { 'data': {}, 'string_data': {} }
 			# capture request information
 		self.request_obj = request
+		json_dict = {}
 		if request.is_json:
 			self.json = request.get_json()
-			json_dict = {}
 			for key in self.json.keys():
 				py_key = key.replace('-', '_')
 				json_dict[py_key] = self.json[key]
-			self.json = json_dict
 			self.data = request.get_data()
+		self.json = json_dict
 	
 	# ------------------------ #
 	# -UTILS------------------ #

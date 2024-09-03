@@ -68,7 +68,7 @@ class Field(Quiggle):
 
 	# fallback method - only prints a bug message
 	def use_options(self: Self, _: kwargs_type) -> None:
-		log_bug(' - Field class "{}" has no use_options method - '.format(self.__class__.__name__))
+		self.tools.default_method_log(self, 'use_options')
 
 	# ---------END init methods
 

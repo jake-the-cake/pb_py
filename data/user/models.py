@@ -1,18 +1,12 @@
 from utils.field import Text_Field, Email_Field, Number_Field
 from utils.model import Model
-from utils.controller import ApiController
+from utils.model import Model
 
-class User(ApiController):
+class User(Model):
 
-	def __init__(self, security_level = 5) -> None:
-		super().__init__('user', security_level)
-
-	def use_model(self):
-		return Model(
-			first_name = Text_Field().required(),
-			last_name = Text_Field(),
-			email = Email_Field().required().unique(),
-			age = Text_Field(),
-			security_level = Number_Field().default(),
-			password = Text_Field()
-		)
+	first_name = Text_Field().required()
+	last_name = Text_Field()
+	email = Email_Field().required().unique()
+	age = Text_Field()
+	security_level = Number_Field().default(5)
+	password = Text_Field()
