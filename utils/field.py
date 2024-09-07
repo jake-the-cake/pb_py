@@ -89,13 +89,15 @@ class Field(Quiggle):
 	# write methods
 	# -------------
 
-		# fallback validation method on incoming data
+		# fallback content validation method on incoming data
 	def validate(self: Self) -> None:
 		self.tools.default_method_log(self, 'validate')
 
 		# string version of a variable to store in db
 	def stringify(self: Self) -> None:
-		self.string_value = str(self.value)
+		if not self.value: value = ''
+		else: value = self.value
+		self.string_value = str(value)
 
 	# ----------END write methods
 # =======================================================END field class

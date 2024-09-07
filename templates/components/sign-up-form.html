@@ -43,6 +43,8 @@
 			else {
 				console.error(response.errors)
 				Object.entries(response.errors).forEach(err => {
+					const fieldName = err[0].split['_']
+					console.log(fieldName)
 					input = e.target.querySelector('input[name=' + err[0] + ']')
 					input.value = err[1]
 					input.classList.add('form-field-error')

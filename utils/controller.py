@@ -52,12 +52,13 @@ class ApiController(Quiggle):
 		for key in self.schema.keys():
 			value = self.json.get(key)
 			schema_key = self.schema[key]
-			schema_key.value = value
+			schema_key.set_value(value)
 			schema_key.validate()
-			schema_key.stringify()
+			# schema_key.use_validation(key)
 			self.response_obj['data'][key] = schema_key.value
+			schema_key.stringify()
 			self.response_obj['string_data'][key] = schema_key.string_value
-		self.validate()
+		self.use_validation(self.schema)
 
 	# ------------------------ #
 	# -CONTROLS--------------- #
@@ -68,7 +69,7 @@ class ApiController(Quiggle):
 			self.set_response_obj()
 			self.use_id()
 			if self.errors != {}:
-				return self._400({ 'errors': self.model.errors })
+				return self._400({ 'errors': self.errors })
 			self.add_one()
 			return self.common_reponse(200)
 		except Exception as e:

@@ -11,7 +11,7 @@ class Toolkit:
 
   @staticmethod
   def default_method_log(Class, method: str) -> None:
-    log_bug(' - "{}" class has no {} method - '.format(Class.__class__.__name__, method))
+    log_bug('"{}" class has no {} method.'.format(Class.__class__.__name__, method))
 
   @staticmethod
   def set_class_props(Class, object = {}):

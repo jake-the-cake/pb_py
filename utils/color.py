@@ -37,8 +37,13 @@ class Colors:
 
 def log_bug(message: str) -> None:
 	print(
+		Colors.BACKGROUND_BLACK + 
+		Colors.GREEN +
+		' >>> ' + 
 		Colors.BACKGROUND_GREEN + 
-		Colors.LIGHT_GRAY + 
+		Colors.BLACK + 
+		' ' +
 		message +
+		' ' +
 		Colors.RESET
 	)

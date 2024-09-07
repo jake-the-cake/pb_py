@@ -1,6 +1,5 @@
 from utils.field import Text_Field, Email_Field, Number_Field
 from utils.model import Model
-from utils.model import Model
 
 class User(Model):
 
