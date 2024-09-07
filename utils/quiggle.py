@@ -17,7 +17,9 @@ class Toolkit:
   def set_class_props(Class, object = {}):
     dictionary = Class.__class__.__dict__
     for key in dictionary.keys():
-      if not key.startswith('__'): object[key] = dictionary[key]
+      if not key.startswith('__'):
+        object[key] = dictionary[key]
+        object[key].key = key
     return object
 
 # Quiggle Class

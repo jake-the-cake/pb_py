@@ -54,9 +54,10 @@ class ApiController(Quiggle):
 			schema_key = self.schema[key]
 			schema_key.set_value(value)
 			schema_key.validate()
+			print(schema_key.errors)
 			# schema_key.use_validation(key)
 			self.response_obj['data'][key] = schema_key.value
-			schema_key.stringify()
+			# schema_key.stringify()
 			self.response_obj['string_data'][key] = schema_key.string_value
 		self.use_validation(self.schema)
 

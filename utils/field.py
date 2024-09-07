@@ -16,6 +16,7 @@ class Field(Quiggle):
 		super().__init__()
 
 		# set default props
+		self.key: str = None
 		self.is_required: bool = False
 		self.is_unique: bool = False
 		self.default_value: allowed_field_type = None
@@ -57,14 +58,20 @@ class Field(Quiggle):
 		self.default_value = value
 		return self
 
-	# set the value from input or default
-	def set_value(self: Self, value: allowed_field_type) -> None: self.value = value
-	def use_default(self: Self) -> None: self.value = self.default_value
+	# update the value and string_value
+	def set_value(self: Self, value: allowed_field_type) -> None:
+		self.value = value
+		self.stringify()
+
+	# update the value with the deafult_value
+	def use_default(self: Self) -> None:
+		self.set_value(self.default_value)
 
 	# set the valid parse rules for the field type
 	def load_options(self: Self, options: kwargs_type, valid_options: list[str]) -> None:
 		for opt in valid_options:
-			if opt in options: self.parse_rules[opt] = options[opt]
+			if opt in options:
+				self.parse_rules[opt] = options[opt]
 
 	# fallback method - only prints a bug message
 	def use_options(self: Self, _: kwargs_type) -> None:
@@ -80,7 +87,8 @@ class Field(Quiggle):
 		self.string_value = value
 
 	def parse(self: Self) -> None:
-		if self.field_type == 'text': self.value = self.string_value
+		if self.field_type == 'text': 
+			self.set_value(self.string_value)
 		else: self.translate() # need a try statement
 
 	# ---------END read methods
@@ -95,9 +103,8 @@ class Field(Quiggle):
 
 		# string version of a variable to store in db
 	def stringify(self: Self) -> None:
-		if not self.value: value = ''
-		else: value = self.value
-		self.string_value = str(value)
+		if not self.value: self.value = ''
+		self.string_value = str(self.value)
 
 	# ----------END write methods
 # =======================================================END field class
@@ -116,6 +123,14 @@ class Text_Field(Field):
 		self.load_options(options, [
 			'keep_case'
 		])
+
+	def validate(self: str) -> None:
+		if self.field_type != 'text': super().validate()
+		if self.value != self.string_value:
+			self.errors[self.key] = 'Value is not a string.'
+
+	def translate(self: Self) -> None:
+		pass
 
 # ----------------
 	# number

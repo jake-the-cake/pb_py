@@ -18,7 +18,6 @@ class Model(ApiController):
 		for key in obj:
 			item = obj[key]
 			if not item.value: item.use_default()
-			item.stringify()
 			if item.is_required == True: self.check_required(key, item)			
 			if item.is_unique == True: self.check_unique(key, item)			
 			self.check_length(key, item)

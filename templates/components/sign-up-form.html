@@ -43,14 +43,16 @@
 			else {
 				console.error(response.errors)
 				Object.entries(response.errors).forEach(err => {
-					const fieldName = err[0].split['_']
-					console.log(fieldName)
-					input = e.target.querySelector('input[name=' + err[0] + ']')
+					const fieldName = err[0].split('_')
+					fieldName.pop()
+					input = e.target.querySelector('input[name=' + fieldName.join('-') + ']')
+					const originalValue = input.value
 					input.value = err[1]
 					input.classList.add('form-field-error')
 					input.onfocus = (e) => {
-						e.target.value = data[err[0]]
+						e.target.value = originalValue
 						e.target.classList.remove('form-field-error')
+						input.onfocus = (e) => null
 					}
 				})
 			}
