@@ -1,6 +1,7 @@
 # from typing import Self
 from utils.color import log_bug
 from utils.quiggle import Quiggle
+from utils.number import Number
 
 Self = str
 allowed_field_type = str | bool | int | None
@@ -137,59 +138,70 @@ class Text_Field(Field):
 class Number_Field(Field):
 	def __init__(self: Self, **kwargs: kwargs_type) -> None:
 		super().__init__('number', kwargs)
+		if not hasattr(self.parse_rules, 'round'): self.parse_rules['round'] = 'auto'
+		if not hasattr(self.parse_rules, 'number_type'): self.parse_rules['number_type'] = 'float'
+		if not hasattr(self.parse_rules, 'deicmals'): self.parse_rules['decimals'] = None
 
 	def use_options(self: Self, options: kwargs_type) -> None:
 		self.load_options(options, [
-			'round_int',
-			'number_type'
+			'round',
+			'number_type',
+			'decimals'
 		])
 
 	def translate(self: Self) -> None:
+		number = Number(self.string_value)
+		if self.parse_options['number_type'] == 'int':
+			self.set_value(number.int)
+		elif self.parse_options['number_type'] == 'float' and int(self.parse_rules['decimals']) > Number.get_decimal_length(number.float):
+			self.set_value(number.str_float)
+		else:
+			self.set_value(number.float)
 
-			# set error messages
-		conversion_err = ValueError('Value cannot be converted to a number.')
-		format_err = ValueError('Expected int, but received float. Use "round_int" option to convert "up" or "down".')
+		# 	# set error messages
+		# conversion_err = ValueError('Value cannot be converted to a number.')
+		# format_err = ValueError('Expected int, but received float. Use "round_int" option to convert "up" or "down".')
 
-		# ----- FLOAT/INT OPTION -----
-			# set variables
-		dot_count = len(self.string_value.split('.')) - 1
-		allowed_dots = 999
+		# # ----- FLOAT/INT OPTION -----
+		# 	# set variables
+		# dot_count = len(self.string_value.split('.')) - 1
+		# allowed_dots = 999
 
-			# verify that it can be converted
-		if dot_count > 1 or dot_count < 0: raise conversion_err
+		# 	# verify that it can be converted
+		# if dot_count > 1 or dot_count < 0: raise conversion_err
 
-		def check_whole_number_float(value: str):
-			split_value = value.split('.')
-			if (len(split_value) == 2):
-				for num in split_value[1]:
-					if num != '0': return
-				self.string_value = str(split_value[0])
-			if 'round_int' in self.parse_rules:
-				int_value = int(self.string_value.split('.')[0])
-				round_int_rule = self.parse_rules['round_int']
-				if round_int_rule == 'up':
-					self.value = int_value + 1
-					return
-				if round_int_rule == 'down':
-					self.value = int_value
-					return
-			raise format_err
+		# def check_whole_number_float(value: str):
+		# 	split_value = value.split('.')
+		# 	if (len(split_value) == 2):
+		# 		for num in split_value[1]:
+		# 			if num != '0': return
+		# 		self.string_value = str(split_value[0])
+		# 	if 'round_int' in self.parse_rules:
+		# 		int_value = int(self.string_value.split('.')[0])
+		# 		round_int_rule = self.parse_rules['round_int']
+		# 		if round_int_rule == 'up':
+		# 			self.value = int_value + 1
+		# 			return
+		# 		if round_int_rule == 'down':
+		# 			self.value = int_value
+		# 			return
+		# 	raise format_err
 
-		check_whole_number_float(self.string_value)
+		# check_whole_number_float(self.string_value)
 
-			# option to set output to float or int
-		if 'number_type' in self.parse_rules:
-			type = self.parse_rules['number_type']
-			if type == 'float': allowed_dots = 1
-			if type == 'int': allowed_dots = 0
+		# 	# option to set output to float or int
+		# if 'number_type' in self.parse_rules:
+		# 	type = self.parse_rules['number_type']
+		# 	if type == 'float': allowed_dots = 1
+		# 	if type == 'int': allowed_dots = 0
 		
-			# if there are no dots in the mumber, and its not specified as a float, make int
-		if dot_count == 0 and allowed_dots != 1: self.value = int(self.string_value)
-			# return a float if specified
-		elif allowed_dots == 1: self.value = float(self.string_value)
-			# if there is one dot, but specified as an int, raise error unless round_int option is valid
-		else: check_whole_number_float(self.string_value)
-		# -------------------------END float/int option
+		# 	# if there are no dots in the mumber, and its not specified as a float, make int
+		# if dot_count == 0 and allowed_dots != 1: self.value = int(self.string_value)
+		# 	# return a float if specified
+		# elif allowed_dots == 1: self.value = float(self.string_value)
+		# 	# if there is one dot, but specified as an int, raise error unless round_int option is valid
+		# else: check_whole_number_float(self.string_value)
+		# # -------------------------END float/int option
 
 
 

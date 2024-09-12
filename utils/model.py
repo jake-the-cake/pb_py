@@ -7,6 +7,7 @@ class Model(ApiController):
 		super().__init__()
 		self.name = str.lower(self.__class__.__name__)
 		self.schema = self.tools.set_class_props(self)
+		self.schema['_id'] = None
 		self.table = db[self.name]
 
 	# fallback if no validate method is present
@@ -16,6 +17,8 @@ class Model(ApiController):
 	# check that the values meet the settings
 	def use_validation(self, obj):
 		for key in obj:
+			if key == '_id':
+				continue
 			item = obj[key]
 			if not item.value: item.use_default()
 			if item.is_required == True: self.check_required(key, item)			

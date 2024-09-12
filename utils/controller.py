@@ -51,9 +51,11 @@ class ApiController(Quiggle):
 	def set_response_obj(self):
 		for key in self.schema.keys():
 			value = self.json.get(key)
-			schema_key = self.schema[key]
-			schema_key.set_value(value)
-			schema_key.validate()
+			if key == '_id': self.schema['_id'] = self.use_id()
+			else:
+				schema_key = self.schema[key]
+				schema_key.set_value(value)
+				schema_key.validate()
 			print(schema_key.errors)
 			# schema_key.use_validation(key)
 			self.response_obj['data'][key] = schema_key.value
@@ -86,5 +88,16 @@ class ApiController(Quiggle):
 	def get(self, query = {}):
 		self.set_response_obj()
 		result = self.get_result(query)
-		print(result)
+		response = []
+		for r in result:
+			obj = self.schema
+			for key in r.keys():
+				if key == '_id':
+					obj[key] = r[key]
+				else:
+					obj[key].string_value = r[key]
+			response.append(obj)
+		print(response)
+			
+		# return self._200(response)
 		return self.common_reponse(200)
