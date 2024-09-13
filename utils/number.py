@@ -42,6 +42,7 @@ class Number(Quiggle):
 		# return the length of the decimal places for the value
 	@staticmethod
 	def get_decimal_length(value) -> int:
+		if not value: value = 0
 		return len(str(float(value)).split('.')[1])
 	
 	@staticmethod
@@ -66,7 +67,7 @@ class Number(Quiggle):
 		return int(Number.round_number(value, 0, self.options.get('round', 'auto')))
 	
 	def make_float(self, value) -> float:
-		return Number.round_number(value, self.options.get('decimals', None, self.options.get('round', 'auto')))
+		return Number.round_number(value, self.options.get('decimals', None), self.options.get('round', 'auto'))
 	
 	def values(self):
 		return self.value.get_values()

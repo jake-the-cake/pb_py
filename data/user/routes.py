@@ -19,4 +19,4 @@ def remove_one(id):
 
 @app.route('/api/user/remove/all', methods=['DELETE'])
 def remove_all():
-	return User(1).remove()
+	return User().remove()

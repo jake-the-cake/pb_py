@@ -1,5 +1,7 @@
-from utils.controller import ApiController
 from app import db
+
+from utils.controller import ApiController
+from utils.field import Key_Field
 
 class Model(ApiController):
 
@@ -7,7 +9,7 @@ class Model(ApiController):
 		super().__init__()
 		self.name = str.lower(self.__class__.__name__)
 		self.schema = self.tools.set_class_props(self)
-		self.schema['_id'] = None
+		self.schema['_id'] = Key_Field()
 		self.table = db[self.name]
 
 	# fallback if no validate method is present
@@ -17,12 +19,13 @@ class Model(ApiController):
 	# check that the values meet the settings
 	def use_validation(self, obj):
 		for key in obj:
-			if key == '_id':
-				continue
 			item = obj[key]
-			if not item.value: item.use_default()
-			if item.is_required == True: self.check_required(key, item)			
-			if item.is_unique == True: self.check_unique(key, item)			
+			if not item.value or item.value == '':
+				item.use_default()
+			if item.is_required == True:
+				self.check_required(key, item)			
+			if item.is_unique == True:
+				self.check_unique(key, item)			
 			self.check_length(key, item)
 		# pass to custom validation
 		self.validate()

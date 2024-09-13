@@ -131,7 +131,8 @@ class Text_Field(Field):
 			self.errors[self.key] = 'Value is not a string.'
 
 	def translate(self: Self) -> None:
-		pass
+		if self.field_type != 'text':
+			self.tools.default_method_log(self, 'use_options')
 
 # ----------------
 	# number
@@ -151,59 +152,21 @@ class Number_Field(Field):
 
 	def translate(self: Self) -> None:
 		number = Number(self.string_value)
-		if self.parse_options['number_type'] == 'int':
-			self.set_value(number.int)
-		elif self.parse_options['number_type'] == 'float' and int(self.parse_rules['decimals']) > Number.get_decimal_length(number.float):
-			self.set_value(number.str_float)
+		if self.parse_rules['number_type'] == 'int':
+			self.set_value(number.value.int)
+		elif self.parse_rules['number_type'] == 'float' and int(self.parse_rules['decimals'] or 0) > Number.get_decimal_length(number.value.float):
+			self.set_value(number.value.str_float)
 		else:
-			self.set_value(number.float)
+			self.set_value(number.value.float)
 
-		# 	# set error messages
-		# conversion_err = ValueError('Value cannot be converted to a number.')
-		# format_err = ValueError('Expected int, but received float. Use "round_int" option to convert "up" or "down".')
+# ----------------
+	# key
+class Key_Field(Field):
+	def __init__(self: Self, **kwargs: kwargs_type) -> None:
+		super().__init__('key', kwargs)
 
-		# # ----- FLOAT/INT OPTION -----
-		# 	# set variables
-		# dot_count = len(self.string_value.split('.')) - 1
-		# allowed_dots = 999
-
-		# 	# verify that it can be converted
-		# if dot_count > 1 or dot_count < 0: raise conversion_err
-
-		# def check_whole_number_float(value: str):
-		# 	split_value = value.split('.')
-		# 	if (len(split_value) == 2):
-		# 		for num in split_value[1]:
-		# 			if num != '0': return
-		# 		self.string_value = str(split_value[0])
-		# 	if 'round_int' in self.parse_rules:
-		# 		int_value = int(self.string_value.split('.')[0])
-		# 		round_int_rule = self.parse_rules['round_int']
-		# 		if round_int_rule == 'up':
-		# 			self.value = int_value + 1
-		# 			return
-		# 		if round_int_rule == 'down':
-		# 			self.value = int_value
-		# 			return
-		# 	raise format_err
-
-		# check_whole_number_float(self.string_value)
-
-		# 	# option to set output to float or int
-		# if 'number_type' in self.parse_rules:
-		# 	type = self.parse_rules['number_type']
-		# 	if type == 'float': allowed_dots = 1
-		# 	if type == 'int': allowed_dots = 0
-		
-		# 	# if there are no dots in the mumber, and its not specified as a float, make int
-		# if dot_count == 0 and allowed_dots != 1: self.value = int(self.string_value)
-		# 	# return a float if specified
-		# elif allowed_dots == 1: self.value = float(self.string_value)
-		# 	# if there is one dot, but specified as an int, raise error unless round_int option is valid
-		# else: check_whole_number_float(self.string_value)
-		# # -------------------------END float/int option
-
-
+	def translate(self):
+		pass
 
 # ----------------
 	# boolean

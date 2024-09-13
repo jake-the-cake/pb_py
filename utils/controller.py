@@ -1,5 +1,7 @@
-from utils.uuid import uuid4_hex
 from flask import request, jsonify
+
+from utils.field import Key_Field
+from utils.uuid import uuid4_hex
 from utils.quiggle import Quiggle
 
 class ApiController(Quiggle):
@@ -43,25 +45,35 @@ class ApiController(Quiggle):
 	# -UTILS------------------ #
 	# ------------------------ #
 	
-	def use_id(self):	self.response_obj['data']['_id'] = uuid4_hex()
+	def use_id(self):
+		self.schema['_id'] = Key_Field().default(uuid4_hex())
+		self.schema['_id'].use_default()
 
 	def get_result(self, query):
 		return list(self.table.find(query))
 	
-	def set_response_obj(self):
+	def new_data_object(self):
+		self.use_id()
 		for key in self.schema.keys():
-			value = self.json.get(key)
-			if key == '_id': self.schema['_id'] = self.use_id()
-			else:
-				schema_key = self.schema[key]
-				schema_key.set_value(value)
-				schema_key.validate()
-			print(schema_key.errors)
-			# schema_key.use_validation(key)
-			self.response_obj['data'][key] = schema_key.value
-			# schema_key.stringify()
-			self.response_obj['string_data'][key] = schema_key.string_value
+			item = self.schema.get(key)
+			item.set_value(self.json.get(key, item.value))
+			item.validate()
+			self.response_obj['data'][key] = item.value
+			self.response_obj['string_data'][key] = item.string_value
 		self.use_validation(self.schema)
+
+	def set_response_data(self, data):
+		if isinstance(data, list):
+			response = []
+			for item in data:
+				item_data = {}
+				for key in item.keys():
+					self.schema[key].string_value = str(item[key])
+					self.schema[key].parse()
+					item_data[key] = self.schema[key].value
+				response.append(item_data)
+			data = response
+		self.response_obj['data'] = data
 
 	# ------------------------ #
 	# -CONTROLS--------------- #
@@ -69,8 +81,7 @@ class ApiController(Quiggle):
 
 	def new(self):
 		try:
-			self.set_response_obj()
-			self.use_id()
+			self.new_data_object()
 			if self.errors != {}:
 				return self._400({ 'errors': self.errors })
 			self.add_one()
@@ -86,18 +97,6 @@ class ApiController(Quiggle):
 		return self._200({})
 
 	def get(self, query = {}):
-		self.set_response_obj()
 		result = self.get_result(query)
-		response = []
-		for r in result:
-			obj = self.schema
-			for key in r.keys():
-				if key == '_id':
-					obj[key] = r[key]
-				else:
-					obj[key].string_value = r[key]
-			response.append(obj)
-		print(response)
-			
-		# return self._200(response)
+		self.set_response_data(result)
 		return self.common_reponse(200)
