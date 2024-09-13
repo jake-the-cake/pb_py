@@ -131,8 +131,7 @@ class Text_Field(Field):
 			self.errors[self.key] = 'Value is not a string.'
 
 	def translate(self: Self) -> None:
-		if self.field_type != 'text':
-			self.tools.default_method_log(self, 'use_options')
+		self.set_value(self.string_value)
 
 # ----------------
 	# number
@@ -158,15 +157,6 @@ class Number_Field(Field):
 			self.set_value(number.value.str_float)
 		else:
 			self.set_value(number.value.float)
-
-# ----------------
-	# key
-class Key_Field(Field):
-	def __init__(self: Self, **kwargs: kwargs_type) -> None:
-		super().__init__('key', kwargs)
-
-	def translate(self):
-		pass
 
 # ----------------
 	# boolean
@@ -203,6 +193,13 @@ class Relational_Field(Field):
 # ----------------------------------
 # special fields that are text-based
 # ----------------------------------
+
+# ----------------
+	# key
+class Key_Field(Text_Field):
+	def __init__(self: Self, **kwargs: kwargs_type) -> None:
+		super().__init__(**kwargs)
+		self.field_type = 'key'
 
 # ----------------------------------
 	# emails
