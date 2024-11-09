@@ -1,8 +1,8 @@
 from flask import request, jsonify
 
-from utils.field import Key_Field
-from utils.uuid import uuid4_hex
-from utils.quiggle import Quiggle
+from api.field import Key_Field
+from quiggle.utils.uuid import uuid4_hex
+from quiggle.features.quiggle import Quiggle
 
 class ApiController(Quiggle):
 

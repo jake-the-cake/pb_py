@@ -1,7 +1,7 @@
 from app import db
 
-from utils.controller import ApiController
-from utils.field import Key_Field
+from api.controller import ApiController
+from api.field import Key_Field
 
 class Model(ApiController):
 

@@ -1,5 +1,5 @@
-from utils.field import Text_Field, Date_Field, Relational_Field, List_Field
-from utils.model import Model
+from api.field import Text_Field, Date_Field, Relational_Field, List_Field
+from api.model import Model
 from data.user.models import User
 
 class Event(Model):

@@ -1,7 +1,7 @@
 # from typing import Self
-from utils.color import log_bug
-from utils.quiggle import Quiggle
-from utils.number import Number
+from quiggle.utils.color import log_bug
+from quiggle.features.quiggle import Quiggle
+from quiggle.utils.number import Number
 
 Self = str
 allowed_field_type = str | bool | int | None

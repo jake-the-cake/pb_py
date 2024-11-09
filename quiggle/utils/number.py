@@ -1,5 +1,5 @@
-from utils.quiggle import Quiggle
-from utils.value_store import Value_Store
+from quiggle.features.quiggle import Quiggle
+from quiggle.features.value_store import Value_Store
 
 class Number(Quiggle):
 

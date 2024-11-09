@@ -1,4 +1,4 @@
-from utils.color import log_bug
+from quiggle.utils.color import log_bug
 
 class Error:
   def __init__(self, parent):
